@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.UcStaffMapper">
+
+    <select id="selectList" parameterType="int" resultType="com.example.demo.entity.UcStaff">
+        select * from uc_staff limit 2
+    </select>
+
+
+    <select id="getStaffAccount" parameterType="int" resultType="com.example.demo.vo.ucstaffvo">
+        select s.staff_name,a.account_code from uc_staff s Join uc_account a on s.staff_code = a.staff_code
+    </select>
+
+    <select id="getUcStaffByStaffCode" parameterType="String" resultType="com.example.demo.entity.UcStaff">
+        select * from uc_staff s where s.sex = 0
+        <if test="staffName != null and staffName != ''">
+            and s.staff_name like '%${staffName}%'
+        </if>
+    </select>
+
+
+    <select id="getUcStaffMoreParams"  resultType="com.example.demo.entity.UcStaff">
+        select * from uc_staff s where 1=1
+        <if test="staffName != null and staffName != ''">
+            and s.staff_name like '%${staffName}%'
+        </if>
+
+        <if test="sex != null and sex != ''">
+            and s.sex like '%${sex}%'
+        </if>
+    </select>
+
+    <select id="getUcStaffByMap" parameterType="java.util.Map"  resultType="com.example.demo.entity.UcStaff">
+        select * from uc_staff s where 1=1
+        <if test="staffName != null and staffName != ''">
+            and s.staff_name like '%${staffName}%'
+        </if>
+
+        <if test="sex != null and sex != ''">
+            and s.sex like '%${sex}%'
+        </if>
+    </select>
+
+
+    <select id="queryParams" resultType="com.example.demo.entity.UcStaff">
+        select * from uc_staff s
+        <where>
+            <if test="arr != null and arr.length>0">
+                AND s.staff_name IN
+                <foreach item="item" index="index" collection="arr" open="("  close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="findByPaging" parameterType="map" resultType="com.example.demo.entity.UcStaff">
+        select
+        *
+        from uc_staff
+    </select>
+</mapper>
